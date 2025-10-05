@@ -62,7 +62,12 @@ Usage
 
 Wallet Setup: Generate or import a 12-word mnemonic. Address derives automatically—view on "Balance & Send".
 
+
+
 <img width="1919" height="899" alt="Screenshot 2025-10-05 140913" src="https://github.com/user-attachments/assets/545239d7-20f4-4c36-bc4e-6322150263f6" />
+
+
+
 
 
 Enter recipient (e.g., 0x742d35Cc6634C0532925a3b8D4C9db96c728b0b4).
@@ -71,13 +76,25 @@ Choose ETH/USD amount.
 "Confirm & Sign" (signs with private key; backend verifies).
 
 
+
+
+
 <img width="1919" height="903" alt="Screenshot 2025-10-05 141012" src="https://github.com/user-attachments/assets/788db458-2575-4873-9cc9-57978bbc0803" />
+
+
+
 
 
 View History: Switch to "Transaction History" for logs.
 Notifications: Emails sent on success (check spam).
 
+
+
+
+
 <img width="1910" height="875" alt="Screenshot 2025-10-05 140834" src="https://github.com/user-attachments/assets/59a39e6e-a032-48a4-a207-0a92524735c9" />
+
+
 
 
 
