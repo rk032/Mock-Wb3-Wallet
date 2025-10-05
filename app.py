@@ -13,10 +13,8 @@ import requests
 
 load_dotenv()
 
-# Configure Streamlit page
 st.set_page_config(page_title="Mock Web3 Wallet", layout="wide")
 
-# Firebase Setup - User needs to set FIREBASE_CREDENTIALS_PATH env var to service account JSON path
 if not firebase_admin._apps:
     cred_path = os.getenv('FIREBASE_CREDENTIALS_PATH')
     if not cred_path:
@@ -27,11 +25,10 @@ if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
     except ValueError as e:
         if "already exists" not in str(e).lower():
-            raise  # Re-raise if it's not the duplicate app error
-        print("Firebase app already initialized; skipping.")  # Optional: Log for debugging
+            raise  
+        print("Firebase app already initialized; skipping.")  
 client = firestore.client()
 
-# Initialize session state
 if 'wallet' not in st.session_state:
     st.session_state.wallet = None
 if 'db' not in st.session_state:
@@ -41,11 +38,11 @@ if 'wallet_mgr' not in st.session_state:
 if 'tx_service' not in st.session_state:
     st.session_state.tx_service = TransactionService(st.session_state.db)
 if 'notif_service' not in st.session_state:
-    st.session_state.notif_service = NotificationService()  # Configure with your email/Telegram creds
+    st.session_state.notif_service = NotificationService()  
 
 st.title("💰 Mock Web3 Wallet")
 
-# Sidebar for navigation
+
 page = st.sidebar.selectbox("Choose a page", ["Wallet Setup", "Balance & Send", "Transaction History"])
 
 if page == "Wallet Setup":
@@ -56,8 +53,8 @@ if page == "Wallet Setup":
         if st.button("Generate New Wallet"):
             mnemonic = st.session_state.wallet_mgr.generate_mnemonic()
             st.session_state.wallet = st.session_state.wallet_mgr.from_mnemonic(mnemonic)
-            # Add to DB with random balance
-            balance = round(secrets.randbelow(900) / 100 + 1.0, 2)  # 1.0 to 10.0 ETH
+           
+            balance = round(secrets.randbelow(900) / 100 + 1.0, 2)  
             st.session_state.db.add_wallet(st.session_state.wallet.address, balance)
             st.success(f"New wallet created! Mnemonic: {mnemonic}")
             st.warning("Save this mnemonic securely! It's your secret key.")
@@ -67,7 +64,6 @@ if page == "Wallet Setup":
         if st.button("Import Wallet") and mnemonic_input.strip():
             try:
                 st.session_state.wallet = st.session_state.wallet_mgr.from_mnemonic(mnemonic_input.strip())
-                # Check if exists in DB, else add with 0 balance
                 existing_balance = st.session_state.db.get_balance(st.session_state.wallet.address)
                 if existing_balance is None:
                     st.session_state.db.add_wallet(st.session_state.wallet.address, 0.0)
@@ -77,8 +73,7 @@ if page == "Wallet Setup":
 
 elif page == "Balance & Send" and st.session_state.wallet:
     st.header(f"Wallet Address: {st.session_state.wallet.address}")
-    
-    # Show balance
+
     balance = st.session_state.db.get_balance(st.session_state.wallet.address)
     if balance is not None:
         st.metric("Balance", f"{balance} ETH")
@@ -97,16 +92,16 @@ elif page == "Balance & Send" and st.session_state.wallet:
             
             if amount_type == "ETH":
                 eth_amount = amount
-                usd_equiv = 0  # Will calculate later if needed
+                usd_equiv = 0  
             else:
-                # Fetch ETH equiv via Skip API
+                
                 eth_amount, usd_equiv = st.session_state.tx_service.get_eth_from_usd(amount)
                 if eth_amount is None:
                     st.error("Failed to get quote from API.")
                     st.stop()
-                amount = eth_amount  # Update for display
+                amount = eth_amount 
             
-            # Create approval message
+            
             message = st.session_state.tx_service.create_approval_message(
                 st.session_state.wallet.address, recipient, amount, usd_equiv
             )
@@ -124,7 +119,6 @@ elif page == "Balance & Send" and st.session_state.wallet:
                 st.session_state.signature = signature
                 st.success("Signed! Sending to backend...")
                 
-                # Process transaction
                 result = st.session_state.tx_service.process_transfer(
                     st.session_state.wallet.address,
                     st.session_state.pending_tx["recipient"],
@@ -160,4 +154,5 @@ elif page == "Transaction History" and st.session_state.wallet:
         st.info("No transactions yet.")
 
 else:
+
     st.warning("Please set up a wallet first.")
