@@ -97,12 +97,3 @@ Notifications: Emails sent on success (check spam).
 
 
 
-
-Troubleshooting
-
-Import Errors: Reinstall deps: pip install -r requirements.txt --upgrade.
-Firebase Init: Check env var and JSON path.
-Signing/Verification: Ensure eth-account version matches (0.9.0 for str addresses).
-Firestore Index: Create via console link on query error.
-Gmail Auth: Use app password, not regular one.
-Session Loss: Re-import mnemonic after refresh.
