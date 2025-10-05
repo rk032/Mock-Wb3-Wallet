@@ -72,19 +72,7 @@ Choose ETH/USD amount.
 View History: Switch to "Transaction History" for logs.
 Notifications: Emails sent on success (check spam).
 
-Security Notes: Mnemonics stored in session state (in-memory). For prod, use encrypted storage/hardware wallets.
-File Structure
-textmock_web3_wallet/
-├── app.py                 # Main Streamlit app
-├── services/              # Backend modules
-│   ├── __init__.py
-│   ├── wallet_manager.py  # Mnemonic/wallet derivation & signing
-│   ├── database_manager.py # Firestore CRUD
-│   ├── transaction_service.py # Transfer logic & API
-│   └── notification_service.py # Email notifications
-├── requirements.txt       # Dependencies
-├── documentation.txt      # Detailed internal docs
-└── README.md              # This file
+
 Troubleshooting
 
 Import Errors: Reinstall deps: pip install -r requirements.txt --upgrade.
